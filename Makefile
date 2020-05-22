@@ -18,4 +18,8 @@ install-powerassert:
 test:
 	rails test
 
+c:
+	rails console
+	
+
 .PHONY: app test
