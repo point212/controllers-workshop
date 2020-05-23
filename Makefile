@@ -19,22 +19,22 @@ install-rails:
 	${DOCKER_COMPOSE_RUN} /bin/sh -c "cd /app && gem install bundler:2.0.2 && gem install rails"
 
 install-simpleform:
-	rails app:template LOCATION="https://railsbytes.com/script/VQLslK"
+	${DOCKER_COMPOSE_RUN} /bin/sh -c "rails app:template LOCATION='https://railsbytes.com/script/VQLslK'"
 
 install-haml:
-	rails app:template LOCATION="https://railsbytes.com/script/x7msKK"
+	${DOCKER_COMPOSE_RUN} /bin/sh -c "rails app:template LOCATION='https://railsbytes.com/script/x7msKK'"
 
 install-pry:
-	rails app:template LOCATION='https://railsbytes.com/script/V2Gs4X'
+	${DOCKER_COMPOSE_RUN} /bin/sh -c "rails app:template LOCATION='https://railsbytes.com/script/V2Gs4X'"
 
 install-powerassert:
-	rails app:template LOCATION='https://railsbytes.com/script/xjNsY4'
+	${DOCKER_COMPOSE_RUN} /bin/sh -c "rails app:template LOCATION='https://railsbytes.com/script/xjNsY4'"
 
 run-bundler:
 	${DOCKER_COMPOSE_RUN} /bin/sh -c "cd /app && bundle install
 
 newapp:
-	rails new . --skip-action-mailer --skip-action-mailbox   --skip-action-text --skip-active-storage  --skip-action-cable --skip-turbolinks
+	${DOCKER_COMPOSE_RUN} /bin/sh -c "rails new . --skip-action-mailer --skip-action-mailbox   --skip-action-text --skip-active-storage  --skip-action-cable --skip-turbolinks"
 
 migrate:
 	${DOCKER_COMPOSE_RUN} /bin/sh -c "bundle exec rake db:migrate"
