@@ -2,12 +2,8 @@
 
 one:
   text: Hello
-  user: one
+  user: first
 
 two:
   text: Hi!
-  user: one
-
-three:
-  text: Kek
-  user: two
+  user: first

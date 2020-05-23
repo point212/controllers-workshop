@@ -1,3 +1,5 @@
+require 'test_helper'
+
 class Web::User::NotesControllerTest < ActionDispatch::IntegrationTest
   test '#index' do
     get web_user_notes_path
