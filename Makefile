@@ -31,7 +31,7 @@ install-powerassert:
 	${DOCKER_COMPOSE_RUN} /bin/sh -c "rails app:template LOCATION='https://railsbytes.com/script/xjNsY4'"
 
 run-bundler:
-	${DOCKER_COMPOSE_RUN} /bin/sh -c "cd /app && bundle install
+	${DOCKER_COMPOSE_RUN} /bin/sh -c "cd /app && bundle install"
 
 newapp:
 	${DOCKER_COMPOSE_RUN} /bin/sh -c "rails new . --skip-action-mailer --skip-action-mailbox   --skip-action-text --skip-active-storage  --skip-action-cable --skip-turbolinks"
