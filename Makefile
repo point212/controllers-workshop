@@ -59,7 +59,7 @@ down:
 	docker-compose down
 
 test:
-	${DOCKER_COMPOSE_RUN} bundle exec rspec -f d spec/
+	${DOCKER_COMPOSE_RUN} rails test
 
 lint:
 	${DOCKER_COMPOSE_RUN} rubocop -C false -c .rubocop.yml
