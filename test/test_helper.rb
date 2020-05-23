@@ -1,5 +1,6 @@
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
+require 'minitest/power_assert'
 require 'rails/test_help'
 
 class ActiveSupport::TestCase
