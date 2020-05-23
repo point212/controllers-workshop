@@ -8,15 +8,15 @@ CONTAINER_NAME=dixy_backend/ruby25
 DOCKER_RUN=docker run -it ${USER_PARAM} ${APP_VOLUME_PARAM} ${APP_PORT_PARAM} ${CONTAINER_NAME}
 DOCKER_COMPOSE_RUN=docker-compose run ${USER_PARAM} app
 
-setup: 	build requirements setup_db
+setup: 	build requirements newapp setup_db
 
-requirements: install-rails install-simpleform install-haml install-pry install-powerassert
+requirements: install-rails install-simpleform install-haml install-pry install-powerassert run-bundler
 
 build:
 	docker-compose build --no-cache --force-rm --build-arg UID=${UID} --build-arg USER=${USER} app
 
 install-rails:
-	${DOCKER_COMPOSE_RUN} /bin/sh -c "cd /app && gem install bundler:2.0.2 && gem install rails && bundle install"
+	${DOCKER_COMPOSE_RUN} /bin/sh -c "cd /app && gem install bundler:2.0.2 && gem install rails"
 
 install-simpleform:
 	rails app:template LOCATION="https://railsbytes.com/script/VQLslK"
@@ -29,6 +29,9 @@ install-pry:
 
 install-powerassert:
 	rails app:template LOCATION='https://railsbytes.com/script/xjNsY4'
+
+run-bundler:
+	${DOCKER_COMPOSE_RUN} /bin/sh -c "cd /app && bundle install
 
 newapp:
 	rails new . --skip-action-mailer --skip-action-mailbox   --skip-action-text --skip-active-storage  --skip-action-cable --skip-turbolinks
