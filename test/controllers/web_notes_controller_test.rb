@@ -3,5 +3,6 @@ class Web::User::NotesControllerTest < ActionDispatch::IntegrationTest
     get web_user_notes_path
 
     assert { response.status == 200 }
+    assert { response.body.match('Hello') }
   end
 end
