@@ -8,9 +8,9 @@ CONTAINER_NAME=dixy_backend/ruby25
 DOCKER_RUN=docker run -it ${USER_PARAM} ${APP_VOLUME_PARAM} ${APP_PORT_PARAM} ${CONTAINER_NAME}
 DOCKER_COMPOSE_RUN=docker-compose run ${USER_PARAM} app
 
-setup: 	build requirements newapp setup_db
+setup: 	build requirements run-bundler setup-db
 
-requirements: install-rails install-simpleform install-haml install-pry install-powerassert run-bundler
+requirements: install-rails install-simpleform install-haml install-pry install-powerassert
 
 build:
 	docker-compose build --no-cache --force-rm --build-arg UID=${UID} --build-arg USER=${USER} app
