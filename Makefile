@@ -1,25 +1,64 @@
-setup: newapp install-simpleform install-haml install-pry install-powerassert
+.PHONY: app test
+UID=$(shell id -u)
+USRENAME=`id -un`
+USER_PARAM=--user $(shell id -u):$(shell id -g)
+APP_VOLUME_PARAM=-v `pwd`/.:/app
+APP_PORT_PARAM=-p 80:3000/tcp
+CONTAINER_NAME=dixy_backend/ruby25
+DOCKER_RUN=docker run -it ${USER_PARAM} ${APP_VOLUME_PARAM} ${APP_PORT_PARAM} ${CONTAINER_NAME}
+DOCKER_COMPOSE_RUN=docker-compose run ${USER_PARAM} app
 
-newapp:
-	rails new . --skip-action-mailer --skip-action-mailbox   --skip-action-text --skip-active-storage  --skip-action-cable --skip-turbolinks
+build:
+	docker-compose build --no-cache --force-rm --build-arg UID=${UID} --build-arg USER=${USER} app
 
-install-simpleform: 
-	rails app:template LOCATION="https://railsbytes.com/script/VQLslK"
-	
+install-rails:
+	${DOCKER_COMPOSE_RUN} /bin/sh -c "cd /app && gem install bundler:2.0.2 && gem install rails && bundle install"
+
+install-simpleform:
+    rails app:template LOCATION="https://railsbytes.com/script/VQLslK"
+
 install-haml:
-	rails app:template LOCATION="https://railsbytes.com/script/x7msKK"
+    rails app:template LOCATION="https://railsbytes.com/script/x7msKK"
 
 install-pry:
-	rails app:template LOCATION='https://railsbytes.com/script/V2Gs4X'
+    rails app:template LOCATION='https://railsbytes.com/script/V2Gs4X'
 
 install-powerassert:
-	rails app:template LOCATION='https://railsbytes.com/script/xjNsY4'
+    rails app:template LOCATION='https://railsbytes.com/script/xjNsY4'
+
+newapp:
+    rails new . --skip-action-mailer --skip-action-mailbox   --skip-action-text --skip-active-storage  --skip-action-cable --skip-turbolinks
+
+migrate:
+	${DOCKER_COMPOSE_RUN} /bin/sh -c "bundle exec rake db:migrate"
+
+setup-db:
+	${DOCKER_COMPOSE_RUN} /bin/sh -c "bundle exec rake db:create db:migrate db:seed"
+
+requirements: install-rails install-simpleform install-haml install-pry install-powerassert
+setup: 	build requirements setup_db
+
+
+sh:
+	${DOCKER_COMPOSE_RUN} /bin/bash -l
+
+console:
+	${DOCKER_COMPOSE_RUN} rails console
+
+root-sh:
+	docker run -it ${APP_VOLUME_PARAM} ${APP_PORT_PARAM} ${CONTAINER_NAME} /bin/bash
+
+up:
+	docker-compose up
+
+down:
+	docker-compose down
 
 test:
-	rails test
+	${DOCKER_COMPOSE_RUN} bundle exec rspec -f d spec/
 
-c:
-	rails console
-	
+lint:
+	${DOCKER_COMPOSE_RUN} rubocop -C false -c .rubocop.yml
 
-.PHONY: app test
+edit-credentials:
+	docker-compose run ${USER_PARAM} -e EDITOR=vim app rails credentials:edit

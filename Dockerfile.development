@@ -1,0 +1,34 @@
+FROM ruby:2.6.5
+
+ARG USER
+ARG UID
+
+RUN useradd -d /app -M -U -s /bin/bash -u $UID $USER
+
+RUN apt-get update && apt-get install -y \
+            build-essential \
+            libpq-dev\
+            git \
+            curl \
+            sudo \ 
+            libxml2 \
+            libxml2-dev \ 
+            libxslt1.1 \
+            libxslt1-dev \
+            imagemagick \
+            mc \
+            vim
+
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && sudo apt-get install -y nodejs
+
+RUN npm install -g yarn
+
+ENV PROJECT_ROOT /app
+ENV BUNDLE_PATH $PROJECT_ROOT/vendor/bundle
+ENV GEM_HOME $PROJECT_ROOT/vendor/bundle
+ENV PATH /app/vendor/bundle/bin:$PATH
+ENV HOME /app
+
+USER $USER
+WORKDIR $PROJECT_ROOT
+
